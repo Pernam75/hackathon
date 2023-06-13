@@ -6,6 +6,7 @@ import streamlit as st
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from PIL import Image
+import numpy as np
 
 # Load data
 df = pd.read_csv('df.csv')
@@ -130,8 +131,8 @@ def prediction_co2_emissions_2022_world():
         y_2022 = linreg.predict(X_2022)
         val = df_count[df_count['Year'] == 2021]['CO2e_Emissions'].values
         pourcent_predict= y_2022[0]/val[0]
-        df_predict = df_predict.append({'Country': country, 'CO2e_Emissions': y_2022[0], 'Pourcentage': pourcent_predict}, ignore_index=True)
-
+        # add the prediction to the dataframe without append
+        df_predict = df_predict.append({'Country': country, 'CO2e_Emissions': y_2022[0], 'Pourcentage': pourcent_predict[0]}, ignore_index=True)
     df_2022_pourcent = df_predict.copy()
     df_2022_pourcent["Pourcentage"] = df_2022_pourcent["Pourcentage"] -1
     df_2022_pourcent["Pourcentage"] = df_2022_pourcent["Pourcentage"] * 100
@@ -151,6 +152,14 @@ def prediction_co2_emissions_2022_world():
     # Plot the pourcentage of CO2 emission for 2022 on a map
     fig = px.choropleth(df_2022_pourcent, locations="Country", locationmode='country names', color="Pourcentage", hover_name="Country", color_continuous_scale=px.colors.sequential.Plasma, title='Pourcentage of CO2 emission for 2022')
     st.plotly_chart(fig)
+
+def normlized_mean_squared_error(y_true, y_pred):
+    """
+    Normalized mean squared error (NMSE).
+    """
+    numerator   = np.mean((y_true - y_pred)**2)
+    denominator = np.mean((y_true - np.mean(y_true))**2)
+    return numerator / denominator
 
 def prediction_co2_emissions_2022_country():
     option = st.selectbox('Select the country where you want the prediction',country_list)
@@ -179,8 +188,8 @@ def prediction_co2_emissions_2022_country():
         # Make predictions
         y_pred = linreg.predict(X_test)
 
-        # Evaluate the model
-        st.write('Mean squared error: %.2f' % mean_squared_error(y_test, y_pred))
+        # Evaluate the model using normalized mean squared error and coefficient of determination
+        st.write('Normalized mean squared error: %.2f' % normlized_mean_squared_error(y_test, y_pred))
         st.write('Coefficient of determination: %.2f' % r2_score(y_test, y_pred))
 
         # Predict the CO2 emission for 2022
@@ -194,7 +203,7 @@ def prediction_co2_emissions_2022_country():
         val = df_fr[df_fr['Year'] == 2021]['CO2e_Emissions'].values
         pourcent_predict= y_2022[0]/val[0]
         print(pourcent_predict)
-        st.write('Pourcentage of variation between 2021 and our prediction for 2022: ', pourcent_predict)
+        st.write('Pourcentage of variation between 2021 and our prediction for 2022: ', round(pourcent_predict - 1, 4) * 100, '%')
 
         # Plot the evolution of the energy consumption for France with 2022 prediction
         fig = plt.figure(figsize=(20, 10))

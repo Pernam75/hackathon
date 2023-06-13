@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from PIL import Image
 
 # Load data
-df = pd.read_csv('df.csv')
+df = pd.read_csv('app/df.csv')
 country_list = df['Country'].unique().tolist()
 country_list_without_france = country_list.copy()
 country_list_without_france.remove('France')
@@ -225,7 +225,7 @@ def main():
         prediction_co2_emissions_2022_country()
     elif  option == 'Forecasting':
         st.title('Forecasting the CO2 emission for France')
-        image = Image.open('forecasting_france.png')
+        image = Image.open('app/forecasting_france.png')
         st.image(image, caption='Foercasting the CO2 emission for France')
         
         

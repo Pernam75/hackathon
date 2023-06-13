@@ -47,7 +47,7 @@
       },
       "repoUrl": {
         "type": "string",
-        "defaultValue": "https://github.com/benalexkeen/streamlit-azure-app-services.git",
+        "defaultValue": "https://github.com/Pernam75/hackathon.git",
         "metadata": {
           "description": "Git Repo URL"
         }

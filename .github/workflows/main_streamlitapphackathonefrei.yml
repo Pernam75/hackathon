@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'StreamlitAppHackathonEFREI'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4FDF018D735848D0A1C49AF60360AA62 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_912F0E3BD5BF4F7E86FBF278F82022B2 }}

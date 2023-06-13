@@ -7,7 +7,7 @@
         "defaultValue": "[concat('webApp-', uniqueString(resourceGroup().id))]",
         "minLength": 2,
         "metadata": {
-          "description": "Web app name."
+          "description": "Hackathon EFREI"
         }
       },
       "location": {
